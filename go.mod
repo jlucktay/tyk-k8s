@@ -1,6 +1,6 @@
-module github.com/TykTechnologies/tyk-k8s
+module go.jlucktay.dev/tyk-k8s
 
-go 1.13
+go 1.16
 
 require (
 	github.com/TykTechnologies/gojsonschema v0.0.0-20170222154038-dcb3e4bb7990

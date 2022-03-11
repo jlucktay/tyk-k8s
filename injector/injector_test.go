@@ -8,10 +8,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/TykTechnologies/tyk-k8s/_test_util"
-	"github.com/TykTechnologies/tyk-k8s/ca"
-	"github.com/TykTechnologies/tyk-k8s/tyk"
 	"github.com/ghodss/yaml"
+
+	"go.jlucktay.dev/tyk-k8s/_test_util"
+	"go.jlucktay.dev/tyk-k8s/ca"
+	"go.jlucktay.dev/tyk-k8s/tyk"
 )
 
 func TestWebhookServer_Serve(t *testing.T) {

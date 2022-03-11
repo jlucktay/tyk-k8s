@@ -11,10 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/TykTechnologies/tyk-k8s/injector"
-	"github.com/TykTechnologies/tyk-k8s/logger"
-	"github.com/TykTechnologies/tyk-k8s/tyk"
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/api/extensions/v1beta1"
 	netv1beta1 "k8s.io/api/networking/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -25,6 +22,10 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/clientcmd"
+
+	"go.jlucktay.dev/tyk-k8s/injector"
+	"go.jlucktay.dev/tyk-k8s/logger"
+	"go.jlucktay.dev/tyk-k8s/tyk"
 )
 
 type Config struct {

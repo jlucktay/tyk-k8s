@@ -12,14 +12,15 @@ import (
 
 	"github.com/TykTechnologies/tyk/apidef"
 
-	"github.com/TykTechnologies/tyk-k8s/logger"
-	"github.com/TykTechnologies/tyk-k8s/processor"
 	"github.com/TykTechnologies/tyk-sync/clients/dashboard"
 	"github.com/TykTechnologies/tyk-sync/clients/gateway"
 	"github.com/TykTechnologies/tyk-sync/clients/interfaces"
 	"github.com/TykTechnologies/tyk-sync/clients/objects"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/viper"
+
+	"go.jlucktay.dev/tyk-k8s/logger"
+	"go.jlucktay.dev/tyk-k8s/processor"
 )
 
 func cleanSlug(s string) string {

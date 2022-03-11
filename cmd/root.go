@@ -2,13 +2,14 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/TykTechnologies/tyk-k8s/tyk"
 	"os"
 	"strings"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
+	"go.jlucktay.dev/tyk-k8s/tyk"
 )
 
 var cfgFile string

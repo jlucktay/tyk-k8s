@@ -1,16 +1,18 @@
 package cmd
 
 import (
-	"github.com/TykTechnologies/tyk-k8s/ca"
-	"github.com/TykTechnologies/tyk-k8s/ingress"
-	"github.com/TykTechnologies/tyk-k8s/injector"
-	"github.com/TykTechnologies/tyk-k8s/logger"
-	"github.com/TykTechnologies/tyk-k8s/webserver"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"os"
 	"os/signal"
 	"sync"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+
+	"go.jlucktay.dev/tyk-k8s/ca"
+	"go.jlucktay.dev/tyk-k8s/ingress"
+	"go.jlucktay.dev/tyk-k8s/injector"
+	"go.jlucktay.dev/tyk-k8s/logger"
+	"go.jlucktay.dev/tyk-k8s/webserver"
 )
 
 var log = logger.GetLogger("main")

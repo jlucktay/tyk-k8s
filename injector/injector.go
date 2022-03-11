@@ -5,11 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/TykTechnologies/tyk-k8s/ca"
-	"github.com/TykTechnologies/tyk-k8s/logger"
-	"github.com/TykTechnologies/tyk-k8s/tyk"
 	"io/ioutil"
-	"k8s.io/apimachinery/pkg/util/intstr"
 	"net/http"
 	"strings"
 
@@ -20,6 +16,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
+	"k8s.io/apimachinery/pkg/util/intstr"
+
+	"go.jlucktay.dev/tyk-k8s/ca"
+	"go.jlucktay.dev/tyk-k8s/logger"
+	"go.jlucktay.dev/tyk-k8s/tyk"
 )
 
 var log = logger.GetLogger("injector")

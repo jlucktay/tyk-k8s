@@ -10,17 +10,19 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"github.com/TykTechnologies/tyk-k8s/logger"
-	"github.com/TykTechnologies/tyk-k8s/tyk"
+	"io/ioutil"
+	"time"
+
 	"github.com/TykTechnologies/tyk/certs"
 	"github.com/cloudflare/cfssl/api/client"
 	"github.com/cloudflare/cfssl/auth"
 	"github.com/cloudflare/cfssl/csr"
 	"github.com/globalsign/mgo"
-	uuid "github.com/satori/go.uuid"
 	"github.com/globalsign/mgo/bson"
-	"io/ioutil"
-	"time"
+	uuid "github.com/satori/go.uuid"
+
+	"go.jlucktay.dev/tyk-k8s/logger"
+	"go.jlucktay.dev/tyk-k8s/tyk"
 )
 
 var log = logger.GetLogger("tyk-ca")

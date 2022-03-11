@@ -1,0 +1,5 @@
+{
+  "gopls": {
+    "local": "go.jlucktay.dev/tyk-k8s"
+  }
+}

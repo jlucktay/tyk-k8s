@@ -3,12 +3,14 @@ package webserver
 import (
 	"context"
 	"crypto/sha256"
-	"github.com/TykTechnologies/tyk-k8s/logger"
-	"github.com/ghodss/yaml"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"time"
+
+	"github.com/ghodss/yaml"
+	"github.com/gorilla/mux"
+
+	"go.jlucktay.dev/tyk-k8s/logger"
 )
 
 var server *WebServer

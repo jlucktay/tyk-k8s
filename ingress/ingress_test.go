@@ -9,11 +9,12 @@ import (
 
 	yaml "gopkg.in/yaml.v2"
 
-	"github.com/TykTechnologies/tyk-k8s/tyk"
 	"github.com/TykTechnologies/tyk-sync/clients/objects"
 	"k8s.io/api/networking/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+
+	"go.jlucktay.dev/tyk-k8s/tyk"
 )
 
 var lastResponse string

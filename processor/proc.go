@@ -3,10 +3,12 @@ package processor
 import (
 	"encoding/json"
 	"errors"
-	"github.com/TykTechnologies/tyk-k8s/logger"
-	"github.com/tidwall/sjson"
 	"strconv"
 	"strings"
+
+	"github.com/tidwall/sjson"
+
+	"go.jlucktay.dev/tyk-k8s/logger"
 )
 
 type ValueType string
