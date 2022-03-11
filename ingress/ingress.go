@@ -32,10 +32,12 @@ type Config struct {
 	WatchNamespaces []string
 }
 
-var ctrl *ControlServer
-var log = logger.GetLogger("ingress")
-var opLog = sync.Map{}
-var runtimeScheme = runtime.NewScheme()
+var (
+	ctrl          *ControlServer
+	log           = logger.GetLogger("ingress")
+	opLog         = sync.Map{}
+	runtimeScheme = runtime.NewScheme()
+)
 
 const (
 	IngressAnnotation      = "kubernetes.io/ingress.class"
@@ -190,7 +192,6 @@ func (c *ControlServer) handleTLS(ing *netv1beta1.Ingress) (map[string]string, e
 	}
 
 	return certMap, nil
-
 }
 
 func checkAndGetTemplate(ing *netv1beta1.Ingress) string {
@@ -280,8 +281,7 @@ func (c *ControlServer) handleIngressAdd(obj interface{}) {
 	}
 }
 
-func (c *ControlServer) handleIngressUpdate(oldObj interface{}, newObj interface{}) {
-
+func (c *ControlServer) handleIngressUpdate(oldObj, newObj interface{}) {
 	oldIng, ok := convertIngress(oldObj)
 	if !ok {
 		log.Errorf("type not allowed: %v", reflect.TypeOf(oldIng))
@@ -336,12 +336,10 @@ func (c *ControlServer) handleIngressUpdate(oldObj interface{}, newObj interface
 	}
 
 	return
-
 }
 
-func (c *ControlServer) ingressChanged(old *netv1beta1.Ingress, new *netv1beta1.Ingress) bool {
-
-	//first check top level changes like annotations
+func (c *ControlServer) ingressChanged(old, new *netv1beta1.Ingress) bool {
+	// first check top level changes like annotations
 	// try and get out early with a simple length check
 	if len(old.Annotations) != len(new.Annotations) {
 		return true
@@ -386,7 +384,6 @@ func (c *ControlServer) ingressChanged(old *netv1beta1.Ingress, new *netv1beta1.
 	}
 
 	return false
-
 }
 
 func (c *ControlServer) doDelete(oldIng *netv1beta1.Ingress) error {

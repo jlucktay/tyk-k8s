@@ -13,8 +13,10 @@ import (
 	"go.jlucktay.dev/tyk-k8s/logger"
 )
 
-var server *WebServer
-var log = logger.GetLogger("web")
+var (
+	server *WebServer
+	log    = logger.GetLogger("web")
+)
 
 // WebServer config
 type Config struct {
@@ -40,7 +42,7 @@ func newServer(cfg *Config) *WebServer {
 	return s
 }
 
-func (s *WebServer) AddRoute(method string, route string, handler func(http.ResponseWriter, *http.Request)) {
+func (s *WebServer) AddRoute(method, route string, handler func(http.ResponseWriter, *http.Request)) {
 	if s.mux == nil {
 		s.mux = mux.NewRouter()
 	}
@@ -78,7 +80,6 @@ func (s *WebServer) Start() {
 	} else {
 		log.Error(srv.ListenAndServeTLS(s.cfg.CertFile, s.cfg.KeyFile))
 	}
-
 }
 
 func (s *WebServer) Stop() error {

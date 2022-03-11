@@ -150,7 +150,7 @@ func addContainer(pod *corev1.Pod, added []corev1.Container) *corev1.PodSpec {
 		Hostnames: []string{"mesh", "mesh.local"},
 	})
 
-	for idx, _ := range added {
+	for idx := range added {
 		spec.Containers = append(spec.Containers, added[idx])
 	}
 
@@ -162,14 +162,14 @@ func addInitContainer(spec *corev1.PodSpec, added []corev1.Container) *corev1.Po
 		spec.InitContainers = []corev1.Container{}
 	}
 
-	for idx, _ := range added {
+	for idx := range added {
 		spec.InitContainers = append(spec.InitContainers, added[idx])
 	}
 
 	return spec
 }
 
-func updateAnnotation(target map[string]string, added map[string]string) (patch []patchOperation) {
+func updateAnnotation(target, added map[string]string) (patch []patchOperation) {
 	if target == nil {
 		target = map[string]string{}
 	}
@@ -184,7 +184,6 @@ func updateAnnotation(target map[string]string, added map[string]string) (patch 
 }
 
 func mutateService(svc *corev1.Service, basePath string, sidecarConfig *Config) (patch []patchOperation) {
-
 	var sidecarPort int32 = 8080
 
 	sidecarSvcPort := &corev1.ServicePort{
@@ -244,16 +243,18 @@ func addVolume(spec *corev1.PodSpec, sidecarConfig *Config) *corev1.PodSpec {
 	return spec
 }
 
-var volName = "ca-pem"
-var certVolumenName = "ssl-certs"
+var (
+	volName         = "ca-pem"
+	certVolumenName = "ssl-certs"
+)
 
 func injectCAVolume(spec *corev1.PodSpec, sidecarConfig *Config) *corev1.PodSpec {
 	if !sidecarConfig.EnableMeshTLS {
 		return spec
 	}
 
-	//path := fmt.Sprintf("/spec/containers")
-	for idx, _ := range spec.Containers {
+	// path := fmt.Sprintf("/spec/containers")
+	for idx := range spec.Containers {
 		// Mount SSL certs from the init container
 		volumeMount := corev1.VolumeMount{
 			Name:      certVolumenName,
@@ -406,7 +407,7 @@ func createServiceRoutes(pod *corev1.Pod, annotations map[string]string, namespa
 
 	meshID := ""
 	meshSlugID := sName + "-mesh"
-	//meshHostName := fmt.Sprintf("%s.mesh", sName)
+	// meshHostName := fmt.Sprintf("%s.mesh", sName)
 	meshOpts := &tyk.APIDefOptions{
 		Slug:         meshSlugID,
 		Target:       tgt,
@@ -434,7 +435,7 @@ func createServiceRoutes(pod *corev1.Pod, annotations map[string]string, namespa
 	return annotations, nil
 }
 
-func (whsvr *WebhookServer) generateStoreAndRegisterCertForAPIDef(sid string, byoCert string) error {
+func (whsvr *WebhookServer) generateStoreAndRegisterCertForAPIDef(sid, byoCert string) error {
 	// Allow us to just manually set a cert ID
 	certID := byoCert
 	if byoCert == "" {

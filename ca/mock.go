@@ -1,9 +1,10 @@
 package ca
 
 import (
-	uuid "github.com/satori/go.uuid"
-	"github.com/globalsign/mgo/bson"
 	"time"
+
+	"github.com/globalsign/mgo/bson"
+	uuid "github.com/satori/go.uuid"
 )
 
 type Mock struct{}

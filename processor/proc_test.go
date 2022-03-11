@@ -2,8 +2,9 @@ package processor
 
 import (
 	"encoding/json"
-	"github.com/TykTechnologies/tyk/apidef"
 	"testing"
+
+	"github.com/TykTechnologies/tyk/apidef"
 )
 
 var js = `
@@ -103,5 +104,4 @@ func TestProc(t *testing.T) {
 	if asDefObj.VersionData.Versions["Default"].ExtendedPaths.HardTimeouts[0].Path != "{all}" {
 		t.Fatal("object not set")
 	}
-
 }

@@ -2,8 +2,9 @@ package tyk
 
 import (
 	"bytes"
-	"github.com/spf13/viper"
 	"testing"
+
+	"github.com/spf13/viper"
 )
 
 func TestInit(t *testing.T) {
@@ -15,7 +16,6 @@ func TestInit(t *testing.T) {
 
 	Init(nil)
 	newClient()
-
 }
 
 var sampleConf = `

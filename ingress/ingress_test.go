@@ -17,8 +17,10 @@ import (
 	"go.jlucktay.dev/tyk-k8s/tyk"
 )
 
-var lastResponse string
-var running = false
+var (
+	lastResponse string
+	running      = false
+)
 
 func serverSetup() {
 	if running {
@@ -95,7 +97,6 @@ spec:
 	}
 
 	lastResponse = ""
-
 }
 
 func TestControlServer_doAdd(t *testing.T) {
@@ -280,7 +281,6 @@ func TestControlServer_UpdateAPIs(t *testing.T) {
 	}
 
 	lastResponse = ""
-
 }
 
 func TestControlServer_doAddWithCustomTemplate(t *testing.T) {
@@ -354,26 +354,56 @@ var ingTests = map[string]struct {
 	in  *v1beta1.Ingress
 	out *v1beta1.Ingress
 }{
-	"changed host": {&v1beta1.Ingress{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "foo-name",
-			Namespace: "bar-namespace",
-			Annotations: map[string]string{
-				IngressAnnotation: IngressAnnotationValue,
+	"changed host": {
+		&v1beta1.Ingress{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      "foo-name",
+				Namespace: "bar-namespace",
+				Annotations: map[string]string{
+					IngressAnnotation: IngressAnnotationValue,
+				},
 			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: "foo.com",
-					IngressRuleValue: v1beta1.IngressRuleValue{
-						HTTP: &v1beta1.HTTPIngressRuleValue{
-							Paths: []v1beta1.HTTPIngressPath{
-								{
-									Path: "/",
-									Backend: v1beta1.IngressBackend{
-										ServiceName: "foo-service",
-										ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: "foo.com",
+						IngressRuleValue: v1beta1.IngressRuleValue{
+							HTTP: &v1beta1.HTTPIngressRuleValue{
+								Paths: []v1beta1.HTTPIngressPath{
+									{
+										Path: "/",
+										Backend: v1beta1.IngressBackend{
+											ServiceName: "foo-service",
+											ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}, &v1beta1.Ingress{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      "foo-name",
+				Namespace: "bar-namespace",
+				Annotations: map[string]string{
+					IngressAnnotation: IngressAnnotationValue,
+				},
+			},
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: "bar.com",
+						IngressRuleValue: v1beta1.IngressRuleValue{
+							HTTP: &v1beta1.HTTPIngressRuleValue{
+								Paths: []v1beta1.HTTPIngressPath{
+									{
+										Path: "/",
+										Backend: v1beta1.IngressBackend{
+											ServiceName: "foo-service",
+											ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+										},
 									},
 								},
 							},
@@ -382,26 +412,56 @@ var ingTests = map[string]struct {
 				},
 			},
 		},
-	}, &v1beta1.Ingress{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "foo-name",
-			Namespace: "bar-namespace",
-			Annotations: map[string]string{
-				IngressAnnotation: IngressAnnotationValue,
+	}, "changed path": {
+		&v1beta1.Ingress{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      "foo-name",
+				Namespace: "bar-namespace",
+				Annotations: map[string]string{
+					IngressAnnotation: IngressAnnotationValue,
+				},
 			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: "bar.com",
-					IngressRuleValue: v1beta1.IngressRuleValue{
-						HTTP: &v1beta1.HTTPIngressRuleValue{
-							Paths: []v1beta1.HTTPIngressPath{
-								{
-									Path: "/",
-									Backend: v1beta1.IngressBackend{
-										ServiceName: "foo-service",
-										ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: "foo.com",
+						IngressRuleValue: v1beta1.IngressRuleValue{
+							HTTP: &v1beta1.HTTPIngressRuleValue{
+								Paths: []v1beta1.HTTPIngressPath{
+									{
+										Path: "/",
+										Backend: v1beta1.IngressBackend{
+											ServiceName: "foo-service",
+											ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}, &v1beta1.Ingress{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      "foo-name",
+				Namespace: "bar-namespace",
+				Annotations: map[string]string{
+					IngressAnnotation: IngressAnnotationValue,
+				},
+			},
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: "foo.com",
+						IngressRuleValue: v1beta1.IngressRuleValue{
+							HTTP: &v1beta1.HTTPIngressRuleValue{
+								Paths: []v1beta1.HTTPIngressPath{
+									{
+										Path: "/changed",
+										Backend: v1beta1.IngressBackend{
+											ServiceName: "foo-service",
+											ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+										},
 									},
 								},
 							},
@@ -410,27 +470,56 @@ var ingTests = map[string]struct {
 				},
 			},
 		},
-	},
-	}, "changed path": {&v1beta1.Ingress{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "foo-name",
-			Namespace: "bar-namespace",
-			Annotations: map[string]string{
-				IngressAnnotation: IngressAnnotationValue,
+	}, "changed service name": {
+		&v1beta1.Ingress{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      "foo-name",
+				Namespace: "bar-namespace",
+				Annotations: map[string]string{
+					IngressAnnotation: IngressAnnotationValue,
+				},
 			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: "foo.com",
-					IngressRuleValue: v1beta1.IngressRuleValue{
-						HTTP: &v1beta1.HTTPIngressRuleValue{
-							Paths: []v1beta1.HTTPIngressPath{
-								{
-									Path: "/",
-									Backend: v1beta1.IngressBackend{
-										ServiceName: "foo-service",
-										ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: "foo.com",
+						IngressRuleValue: v1beta1.IngressRuleValue{
+							HTTP: &v1beta1.HTTPIngressRuleValue{
+								Paths: []v1beta1.HTTPIngressPath{
+									{
+										Path: "/",
+										Backend: v1beta1.IngressBackend{
+											ServiceName: "foo-service",
+											ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}, &v1beta1.Ingress{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      "foo-name",
+				Namespace: "bar-namespace",
+				Annotations: map[string]string{
+					IngressAnnotation: IngressAnnotationValue,
+				},
+			},
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: "foo.com",
+						IngressRuleValue: v1beta1.IngressRuleValue{
+							HTTP: &v1beta1.HTTPIngressRuleValue{
+								Paths: []v1beta1.HTTPIngressPath{
+									{
+										Path: "/",
+										Backend: v1beta1.IngressBackend{
+											ServiceName: "bar-service",
+											ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+										},
 									},
 								},
 							},
@@ -439,26 +528,56 @@ var ingTests = map[string]struct {
 				},
 			},
 		},
-	}, &v1beta1.Ingress{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "foo-name",
-			Namespace: "bar-namespace",
-			Annotations: map[string]string{
-				IngressAnnotation: IngressAnnotationValue,
+	}, "changed service port": {
+		&v1beta1.Ingress{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      "foo-name",
+				Namespace: "bar-namespace",
+				Annotations: map[string]string{
+					IngressAnnotation: IngressAnnotationValue,
+				},
 			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: "foo.com",
-					IngressRuleValue: v1beta1.IngressRuleValue{
-						HTTP: &v1beta1.HTTPIngressRuleValue{
-							Paths: []v1beta1.HTTPIngressPath{
-								{
-									Path: "/changed",
-									Backend: v1beta1.IngressBackend{
-										ServiceName: "foo-service",
-										ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: "foo.com",
+						IngressRuleValue: v1beta1.IngressRuleValue{
+							HTTP: &v1beta1.HTTPIngressRuleValue{
+								Paths: []v1beta1.HTTPIngressPath{
+									{
+										Path: "/",
+										Backend: v1beta1.IngressBackend{
+											ServiceName: "foo-service",
+											ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}, &v1beta1.Ingress{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      "foo-name",
+				Namespace: "bar-namespace",
+				Annotations: map[string]string{
+					IngressAnnotation: IngressAnnotationValue,
+				},
+			},
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: "foo.com",
+						IngressRuleValue: v1beta1.IngressRuleValue{
+							HTTP: &v1beta1.HTTPIngressRuleValue{
+								Paths: []v1beta1.HTTPIngressPath{
+									{
+										Path: "/",
+										Backend: v1beta1.IngressBackend{
+											ServiceName: "foo-service",
+											ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "8000"},
+										},
 									},
 								},
 							},
@@ -467,27 +586,58 @@ var ingTests = map[string]struct {
 				},
 			},
 		},
-	},
-	}, "changed service name": {&v1beta1.Ingress{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "foo-name",
-			Namespace: "bar-namespace",
-			Annotations: map[string]string{
-				IngressAnnotation: IngressAnnotationValue,
+	}, "changed annotation": {
+		&v1beta1.Ingress{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      "foo-name",
+				Namespace: "bar-namespace",
+				Annotations: map[string]string{
+					IngressAnnotation:                 IngressAnnotationValue,
+					"bool.service.tyk.io/use-keyless": "false",
+				},
 			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: "foo.com",
-					IngressRuleValue: v1beta1.IngressRuleValue{
-						HTTP: &v1beta1.HTTPIngressRuleValue{
-							Paths: []v1beta1.HTTPIngressPath{
-								{
-									Path: "/",
-									Backend: v1beta1.IngressBackend{
-										ServiceName: "foo-service",
-										ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: "foo.com",
+						IngressRuleValue: v1beta1.IngressRuleValue{
+							HTTP: &v1beta1.HTTPIngressRuleValue{
+								Paths: []v1beta1.HTTPIngressPath{
+									{
+										Path: "/",
+										Backend: v1beta1.IngressBackend{
+											ServiceName: "foo-service",
+											ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		}, &v1beta1.Ingress{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      "foo-name",
+				Namespace: "bar-namespace",
+				Annotations: map[string]string{
+					IngressAnnotation:                 IngressAnnotationValue,
+					"bool.service.tyk.io/use-keyless": "true",
+				},
+			},
+			Spec: v1beta1.IngressSpec{
+				Rules: []v1beta1.IngressRule{
+					{
+						Host: "foo.com",
+						IngressRuleValue: v1beta1.IngressRuleValue{
+							HTTP: &v1beta1.HTTPIngressRuleValue{
+								Paths: []v1beta1.HTTPIngressPath{
+									{
+										Path: "/",
+										Backend: v1beta1.IngressBackend{
+											ServiceName: "foo-service",
+											ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
+										},
 									},
 								},
 							},
@@ -496,156 +646,10 @@ var ingTests = map[string]struct {
 				},
 			},
 		},
-	}, &v1beta1.Ingress{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "foo-name",
-			Namespace: "bar-namespace",
-			Annotations: map[string]string{
-				IngressAnnotation: IngressAnnotationValue,
-			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: "foo.com",
-					IngressRuleValue: v1beta1.IngressRuleValue{
-						HTTP: &v1beta1.HTTPIngressRuleValue{
-							Paths: []v1beta1.HTTPIngressPath{
-								{
-									Path: "/",
-									Backend: v1beta1.IngressBackend{
-										ServiceName: "bar-service",
-										ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	},
-	}, "changed service port": {&v1beta1.Ingress{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "foo-name",
-			Namespace: "bar-namespace",
-			Annotations: map[string]string{
-				IngressAnnotation: IngressAnnotationValue,
-			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: "foo.com",
-					IngressRuleValue: v1beta1.IngressRuleValue{
-						HTTP: &v1beta1.HTTPIngressRuleValue{
-							Paths: []v1beta1.HTTPIngressPath{
-								{
-									Path: "/",
-									Backend: v1beta1.IngressBackend{
-										ServiceName: "foo-service",
-										ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	}, &v1beta1.Ingress{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "foo-name",
-			Namespace: "bar-namespace",
-			Annotations: map[string]string{
-				IngressAnnotation: IngressAnnotationValue,
-			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: "foo.com",
-					IngressRuleValue: v1beta1.IngressRuleValue{
-						HTTP: &v1beta1.HTTPIngressRuleValue{
-							Paths: []v1beta1.HTTPIngressPath{
-								{
-									Path: "/",
-									Backend: v1beta1.IngressBackend{
-										ServiceName: "foo-service",
-										ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "8000"},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	},
-	}, "changed annotation": {&v1beta1.Ingress{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "foo-name",
-			Namespace: "bar-namespace",
-			Annotations: map[string]string{
-				IngressAnnotation:                 IngressAnnotationValue,
-				"bool.service.tyk.io/use-keyless": "false",
-			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: "foo.com",
-					IngressRuleValue: v1beta1.IngressRuleValue{
-						HTTP: &v1beta1.HTTPIngressRuleValue{
-							Paths: []v1beta1.HTTPIngressPath{
-								{
-									Path: "/",
-									Backend: v1beta1.IngressBackend{
-										ServiceName: "foo-service",
-										ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	}, &v1beta1.Ingress{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "foo-name",
-			Namespace: "bar-namespace",
-			Annotations: map[string]string{
-				IngressAnnotation:                 IngressAnnotationValue,
-				"bool.service.tyk.io/use-keyless": "true",
-			},
-		},
-		Spec: v1beta1.IngressSpec{
-			Rules: []v1beta1.IngressRule{
-				{
-					Host: "foo.com",
-					IngressRuleValue: v1beta1.IngressRuleValue{
-						HTTP: &v1beta1.HTTPIngressRuleValue{
-							Paths: []v1beta1.HTTPIngressPath{
-								{
-									Path: "/",
-									Backend: v1beta1.IngressBackend{
-										ServiceName: "foo-service",
-										ServicePort: intstr.IntOrString{IntVal: 80, StrVal: "80"},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	},
 	},
 }
 
 func TestIngressChanged(t *testing.T) {
-
 	t.Parallel()
 	x := NewController()
 

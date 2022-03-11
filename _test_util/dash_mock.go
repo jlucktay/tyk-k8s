@@ -123,7 +123,6 @@ func (d *DashServerMock) UpdateAPI(w http.ResponseWriter, r *http.Request) {
 }
 
 func (d *DashServerMock) CreateAPI(w http.ResponseWriter, r *http.Request) {
-
 	d.doRawWrite(w, 200, `{"Status":"OK","Message":"API created","Meta":"5c43f0ffd1f3fd0001ff797e"}`)
 }
 

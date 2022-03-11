@@ -28,7 +28,7 @@ func cleanSlug(s string) string {
 	s = r.ReplaceAllString(s, "")
 	r2, _ := regexp.Compile("(//+)")
 	s = r2.ReplaceAllString(s, "")
-	//trim ends:
+	// trim ends:
 	s = strings.Trim(s, "/")
 
 	if len(s) == 0 {
@@ -62,10 +62,12 @@ type APIDefOptions struct {
 	CertificateID []string
 }
 
-var cfg *TykConf
-var log = logger.GetLogger("tyk-api")
-var templates *template.Template
-var defaultIngressTemplates *template.Template
+var (
+	cfg                     *TykConf
+	log                     = logger.GetLogger("tyk-api")
+	templates               *template.Template
+	defaultIngressTemplates *template.Template
+)
 
 const (
 	DefaultIngressTemplate = "default"
@@ -97,7 +99,6 @@ func Init(forceConf *TykConf) {
 	if cfg.InsecureSkipVerify {
 		log.Warning("TLS is not being validated, please ensure certificates are valid")
 	}
-
 }
 
 func newClient() interfaces.UniversalClient {
@@ -137,7 +138,6 @@ func getTemplate(name string) (*template.Template, error) {
 	}
 
 	return tpl, nil
-
 }
 
 func TemplateService(opts *APIDefOptions) ([]byte, error) {
@@ -233,7 +233,6 @@ func CreateService(opts *APIDefOptions) (string, error) {
 	}
 
 	return cl.CreateAPI(apiDef)
-
 }
 
 func DeleteBySlug(slug string) error {
@@ -350,7 +349,6 @@ func UpdateAPIs(svcs map[string]*APIDefOptions) error {
 	}
 
 	return nil
-
 }
 
 func GetBySlug(slug string) (*objects.DBApiDefinition, error) {

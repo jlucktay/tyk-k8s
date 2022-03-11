@@ -126,7 +126,6 @@ func (c *Client) getAuthenticatedClient() (*client.AuthRemote, error) {
 	}
 
 	return client.NewAuthServer(c.CA.Addr, tlsOptions, pr), nil
-
 }
 
 func (c *Client) prepareRequest() *csr.CertificateRequest {
@@ -335,7 +334,6 @@ func (c *Client) GetOrCreateMeshCertID() (string, error) {
 	}
 
 	return cm.Bundle.Fingerprint, nil
-
 }
 
 func NewCertModel(bundle *Bundle) *CertModel {

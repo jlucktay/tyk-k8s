@@ -1,9 +1,10 @@
 package ca
 
 import (
-	"github.com/cloudflare/cfssl/csr"
 	"os"
 	"testing"
+
+	"github.com/cloudflare/cfssl/csr"
 )
 
 // Requires a CFFSL server to be running

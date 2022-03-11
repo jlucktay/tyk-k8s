@@ -16,7 +16,7 @@ func GetPublicKeyFromPem(in []byte) interface{} {
 	return key
 }
 
-func GetCertFromPem(cert []byte, key []byte) *tls.Certificate {
+func GetCertFromPem(cert, key []byte) *tls.Certificate {
 	c, err := tls.X509KeyPair(cert, key)
 	if err != nil {
 		panic(err)
